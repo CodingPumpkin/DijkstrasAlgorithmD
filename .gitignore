@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/dijkstra-alorithm
+dijkstra-alorithm.so
+dijkstra-alorithm.dylib
+dijkstra-alorithm.dll
+dijkstra-alorithm.a
+dijkstra-alorithm.lib
+dijkstra-alorithm-test-*
+*.exe
+*.pdb
+*.o
+*.obj
+*.lst

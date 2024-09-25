@@ -1,0 +1,6 @@
+name "dijkstra-alorithm"
+description "My take on Dijkstra’s Algorithm in D!"
+authors "Daniel Walker"
+copyright "Copyright © 2024, Daniel Walker"
+license "Unlicense"
+sourceFiles "source/*.d"
