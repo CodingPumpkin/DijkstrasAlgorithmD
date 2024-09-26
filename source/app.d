@@ -33,6 +33,9 @@ void dijkstraAlgorithm(int[6][6] graph, int start) {
 
 int main()
 {
+	auto my_graph = new Graph();
+	my_graph.initDefaultGraph();
+	my_graph.printGraph();
     int[6][6] graph = [ [ 0, 1, 2, 0, 0, 0],
                         [ 1, 0, 1, 0, 3, 0],
                         [ 2, 1, 0, 2, 2, 0],
