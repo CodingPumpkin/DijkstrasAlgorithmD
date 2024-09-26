@@ -86,7 +86,7 @@ public:
 		int min = int.max;
 		char min_name = ' ';
 		foreach (key, value; connections)
-			if (value < min) 
+			if (value < min && value > 0) 
 				{
 					min = value;
 					min_name = key;
