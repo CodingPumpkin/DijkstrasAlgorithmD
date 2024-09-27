@@ -2,6 +2,7 @@ class Graph
 {
 public:
 	Vertex[char] vertices;
+	Vertex[char] visited;
 	void add_a_vertex(Vertex v)
 	{
 		auto ver = new Vertex();
@@ -76,15 +77,11 @@ class Vertex
 public:
 	int[char] connections;
 	char name;
-	bool is_visited = false;
-	void set_name(char n)
-	{
-		name = n;
-	}
+	//bool is_visited = false;
 	char shortest_connection()
 	{
 		int min = int.max;
-		char min_name = ' ';
+		char min_name = 'F';
 		foreach (key, value; connections)
 			if (value < min && value > 0) 
 				{

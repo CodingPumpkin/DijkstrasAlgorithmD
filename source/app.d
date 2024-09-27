@@ -5,7 +5,7 @@ import graph;
 int minDistance(int[] dist, bool[] visited) {
     int min = int.max, index_of_min;
     for (int i = 0; i < 6; i++)
-        if (visited[i] == false && dist[i] <= min)
+        if (!visited[i] && dist[i] <= min)
             min = dist[i], index_of_min = i;
     return index_of_min;
 }
@@ -37,22 +37,36 @@ void my_dijkstraAlgorithm(Graph graph, Vertex origin) {
     foreach (vertex; graph.vertices)
     	distances[vertex.name] = int.max; // creating a list to store the shortest distances for each vertex
     distances[origin.name] = 0; // the distance from source to source is zero
-    char c = origin.name;
+    Vertex current_vertex = origin; //graph.vertices[c];
+    char c;
     for (int i = 0; i < size; i++)
     {
+    	c = current_vertex.name;
 		writeln(c);
-		Vertex current_vertex = graph.vertices[c];
-    	current_vertex.is_visited = true;
-        foreach (connection_name, length; current_vertex.connections) //for every connection this vertex has
-            if (!graph.vertices[connection_name].is_visited) //if it has not been visited yet
-            	if (distances[c] + length < distances[connection_name]) //
-            	{
-            		distances[connection_name] = distances[c] + length;
-            	}
-        c = current_vertex.shortest_connection();
+		graph.visited[c] = graph.vertices.require(c);
+		graph.vertices.remove(current_vertex.name);
+    	foreach(name, vertex; graph.vertices)
+    	{
+        	if(current_vertex && name in current_vertex.connections)
+        		if (distances[current_vertex.name] + current_vertex.connections.require(name) < distances[name]) //
+        		{
+        			distances[name] = distances[current_vertex.name] + current_vertex.connections.require(name);
+        		}
+        }
+        int min = int.max;
+        foreach (key, value; current_vertex.connections)
+			if (value < min && value > 0) 
+				{
+					min = value;
+					write(key);
+					if(graph.vertices.length > 0)
+						current_vertex = graph.vertices.require(key, graph.vertices[(graph.vertices.keys[0])]);
+				}
 	}
+	
+        writeln;
     writeln("Vertex \t Distance from the Source");
-    foreach (name, _; graph.vertices){;
+    foreach (name, _; graph.visited){;
         writeln(name, "\t\t", distances[name]);
     }
 }
@@ -63,6 +77,8 @@ int main()
 	my_graph.initDefaultGraph();
 	my_graph.printGraph();
     my_dijkstraAlgorithm(my_graph, my_graph.get_vertex('A'));
+    
+
     int[6][6] graph = [ [ 0, 1, 2, 0, 0, 0],
                         [ 1, 0, 1, 0, 3, 0],
                         [ 2, 1, 0, 2, 2, 0],
@@ -70,8 +86,7 @@ int main()
                         [ 0, 3, 2, 1, 0, 2],
                         [ 0, 0, 0, 1, 2, 0],
     ];
-
-    dijkstraAlgorithm(graph, 2);
+    dijkstraAlgorithm(graph, 1);
 
     return 0;
 }
