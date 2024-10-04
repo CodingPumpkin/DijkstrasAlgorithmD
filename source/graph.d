@@ -47,7 +47,7 @@ public:
 		add_edge('C', 'E', 2);
 		add_edge('C', 'D', 2);
 		add_edge('D', 'E', 1);
-		add_edge('C', 'F', 1);
+		add_edge('D', 'F', 1);
 		add_edge('E', 'F', 2);
 	}
 	void printGraph()
@@ -55,5 +55,45 @@ public:
 		import std.stdio;
 		for(int i = 0; i<num_of_vertices; i++)
 			writeln(vertices[i], ": ", edges[i]);
+	}
+	void shortest_distances_from_origin(char origin)
+	{
+		int origin_index = index_of_vertex(origin);
+		int[] distances = new int[num_of_vertices];
+		distances[] = int.max;
+		distances[origin_index] = 0;
+		for (int i = 0; i < num_of_vertices; i++)
+		{
+			int min_distance = int.max;
+			char closest_vertex = ' ';
+			for (int j = 0; j < num_of_vertices; j++)
+			{
+				if(!visited[vertices[j]] && edges[i][j])
+					if(edges[i][j] < min_distance)
+					{
+						min_distance = edges[i][j];
+						closest_vertex = vertices[j];
+					}
+			}
+			if (min_distance == int.max)
+				break;
+			visited[closest_vertex] = true;
+			int c_index = index_of_vertex(closest_vertex);
+			for(int j = 0; j < num_of_vertices; j++)
+			{
+				if (distances[c_index] != int.max)
+					if(edges[c_index][j] != 0)
+						if (distances[c_index] + edges[c_index][j] < distances[j])
+							distances[j] = distances[c_index] + edges[c_index][j];
+
+			}
+		}
+		printDistances(distances, origin);
+	}
+	void printDistances(int[] dists, char origin)
+	{
+		import std.stdio;
+		for(int i = 0; i < num_of_vertices; i++)
+			writeln("Shotest distance from ", origin, " to ", vertices[i], " is ", dists[i]);
 	}
 }

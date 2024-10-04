@@ -9,6 +9,7 @@ int minDistance(int[] dist, bool[] visited) {
             min = dist[i], index_of_min = i;
     return index_of_min;
 }
+
 void dijkstraAlgorithm(int[6][6] graph, int start) {
     int[6] distances = int.max; // creating a list to store the shortest distances for each vertex
     bool[6] visited = false;
@@ -31,46 +32,12 @@ void dijkstraAlgorithm(int[6][6] graph, int start) {
     }
 }
 
-void my_dijkstraAlgorithm(Graph graph, char origin) 
-{
-	int origin_index = graph.index_of_vertex(origin);
-	int[] distances = new int[graph.num_of_vertices];
-	distances[] = int.max;
-	distances[origin_index] = 0;
-	for (int i = 0; i < graph.num_of_vertices; i++)
-	{
-		int min_distance = int.max;
-		char closest_vertex = ' ';
-		for (int j = 0; j < graph.num_of_vertices; j++)
-		{
-			if(!graph.visited[graph.vertices[j]] && graph.edges[i][j])
-				if(graph.edges[i][j] < min_distance)
-				{
-					min_distance = graph.edges[i][j];
-					closest_vertex = graph.vertices[j];
-				}
-		}
-		if (min_distance == int.max)
-			break;
-		graph.visited[closest_vertex] = true;
-		int c_index = graph.index_of_vertex(closest_vertex);
-		for(int j = 0; j < graph.num_of_vertices; j++)
-		{
-			if(graph.edges[c_index][j])
-				if (distances[c_index] + graph.edges[c_index][j] < distances[j])
-					distances[j] = distances[c_index] + graph.edges[c_index][j];
-		}
-	}
-	writeln(distances);
-}
-
 int main()
 {
 	auto my_graph = new Graph();
 	my_graph.initDefaultGraph();
 	my_graph.printGraph();
-    my_dijkstraAlgorithm(my_graph, 'A');
- 
+    my_graph.shortest_distances_from_origin('B');
     int[6][6] graph = [ [ 0, 1, 2, 0, 0, 0],
                         [ 1, 0, 1, 0, 3, 0],
                         [ 2, 1, 0, 2, 2, 0],
@@ -79,6 +46,5 @@ int main()
                         [ 0, 0, 0, 1, 2, 0],
     ];
     dijkstraAlgorithm(graph, 1);
-
     return 0;
 }
