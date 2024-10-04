@@ -1,7 +1,7 @@
 import std.algorithm: canFind;
 class Graph
 {
-public:
+private:
 	int num_of_vertices;
 	char[] vertices;
 	bool[char] visited;
@@ -31,6 +31,13 @@ public:
 		for (int i = 0; i < num_of_vertices; i++)
 			edges ~= new int[num_of_vertices];
 	}
+	void printDistances(int[] dists, char origin)
+	{
+		import std.stdio;
+		for(int i = 0; i < num_of_vertices; i++)
+			writeln("Shotest distance from ", origin, " to ", vertices[i], " is ", dists[i]);
+	}
+public:
 	void initDefaultGraph()
 	{
 		add_a_vertex('A');
@@ -89,11 +96,5 @@ public:
 			}
 		}
 		printDistances(distances, origin);
-	}
-	void printDistances(int[] dists, char origin)
-	{
-		import std.stdio;
-		for(int i = 0; i < num_of_vertices; i++)
-			writeln("Shotest distance from ", origin, " to ", vertices[i], " is ", dists[i]);
 	}
 }
