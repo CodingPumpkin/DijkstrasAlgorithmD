@@ -1,94 +1,59 @@
+import std.algorithm: canFind;
 class Graph
 {
 public:
-	Vertex[char] vertices;
-	Vertex[char] visited;
-	void add_a_vertex(Vertex v)
+	int num_of_vertices;
+	char[] vertices;
+	bool[char] visited;
+	int[][] edges;
+	void add_a_vertex(char new_vertex)
 	{
-		auto ver = new Vertex();
-		ver.name = v.name;
-		foreach (key, value; v.connections)
-		{
-			ver.connections[key] = value;
-		}
-		vertices[v.name] = ver;
+		num_of_vertices += 1;
+		vertices ~= new_vertex;
+		visited[new_vertex] = false;
 	}
-	Vertex get_vertex(char c)
+	void add_edge(char v1, char v2, int d)
 	{
-		return vertices.require(c);
+		int num_v1 = index_of_vertex(v1);
+		int num_v2 = index_of_vertex(v2);
+		edges[num_v1][num_v2] = d;
+		edges[num_v2][num_v1] = d;
+	}
+	int index_of_vertex(char vertex)
+	{
+		for (int i = 0; i < num_of_vertices; i++)
+			if (vertices[i] == vertex)
+				return i;
+		return -1;
+	}
+	void initEdges()
+	{
+		for (int i = 0; i < num_of_vertices; i++)
+			edges ~= new int[num_of_vertices];
 	}
 	void initDefaultGraph()
 	{
-		auto v = new Vertex();
-		v.name = 'A';
-		v.connections['A'] = 0;
-		v.connections['B'] = 1;
-		v.connections['C'] = 2;
-		add_a_vertex(v);
-		v.name = 'B';
-		v.connections['A'] = 1;
-		v.connections['B'] = 0;
-		v.connections['C'] = 1;
-		v.connections['E'] = 3;
-		add_a_vertex(v);
-		v.name = 'C';
-		v.connections['A'] = 2;
-		v.connections['B'] = 1;
-		v.connections['C'] = 0;
-		v.connections['E'] = 2;
-		v.connections['D'] = 2;
-		add_a_vertex(v);
-		v.name = 'D';
-		v.connections['D'] = 0;
-		v.connections['C'] = 2;
-		v.connections['E'] = 1;
-		v.connections['F'] = 1;
-		add_a_vertex(v);
-		v.name = 'E';
-		v.connections['B'] = 3;
-		v.connections['C'] = 2;
-		v.connections['D'] = 1;
-		v.connections['E'] = 0;
-		v.connections['F'] = 2;
-		add_a_vertex(v);
-		v.name = 'F';
-		v.connections['D'] = 1;;
-		v.connections['E'] = 2;
-		v.connections['F'] = 0;
-		add_a_vertex(v);
+		add_a_vertex('A');
+		add_a_vertex('B');
+		add_a_vertex('C');
+		add_a_vertex('D');
+		add_a_vertex('E');
+		add_a_vertex('F');
+		initEdges();	
+		add_edge('A', 'B', 1);
+		add_edge('A', 'C', 2);
+		add_edge('B', 'C', 1);
+		add_edge('B', 'E', 3);
+		add_edge('C', 'E', 2);
+		add_edge('C', 'D', 2);
+		add_edge('D', 'E', 1);
+		add_edge('C', 'F', 1);
+		add_edge('E', 'F', 2);
 	}
 	void printGraph()
 	{
 		import std.stdio;
-		foreach (v; vertices)
-		{
-			writeln(v.name, " is connected to: ");
-			foreach (key, value; v.connections)
-			{
-				write(key, "(", value, ")\t");
-			}
-			writeln();
-		}
+		for(int i = 0; i<num_of_vertices; i++)
+			writeln(vertices[i], ": ", edges[i]);
 	}
 }
-
-class Vertex
-{
-public:
-	int[char] connections;
-	char name;
-	//bool is_visited = false;
-	char shortest_connection()
-	{
-		int min = int.max;
-		char min_name = 'F';
-		foreach (key, value; connections)
-			if (value < min && value > 0) 
-				{
-					min = value;
-					min_name = key;
-				}
-		return min_name;
-	}
-}
-

@@ -31,44 +31,37 @@ void dijkstraAlgorithm(int[6][6] graph, int start) {
     }
 }
 
-void my_dijkstraAlgorithm(Graph graph, Vertex origin) {
-    int size = cast(int) graph.vertices.length;
-    int[char] distances;
-    foreach (vertex; graph.vertices)
-    	distances[vertex.name] = int.max; // creating a list to store the shortest distances for each vertex
-    distances[origin.name] = 0; // the distance from source to source is zero
-    Vertex current_vertex = origin; //graph.vertices[c];
-    char c;
-    for (int i = 0; i < size; i++)
-    {
-    	c = current_vertex.name;
-		writeln(c);
-		graph.visited[c] = graph.vertices.require(c);
-		graph.vertices.remove(current_vertex.name);
-    	foreach(name, vertex; graph.vertices)
-    	{
-        	if(current_vertex && name in current_vertex.connections)
-        		if (distances[current_vertex.name] + current_vertex.connections.require(name) < distances[name]) //
-        		{
-        			distances[name] = distances[current_vertex.name] + current_vertex.connections.require(name);
-        		}
-        }
-        int min = int.max;
-        foreach (key, value; current_vertex.connections)
-			if (value < min && value > 0) 
+void my_dijkstraAlgorithm(Graph graph, char origin) 
+{
+	int origin_index = graph.index_of_vertex(origin);
+	int[] distances = new int[graph.num_of_vertices];
+	distances[] = int.max;
+	distances[origin_index] = 0;
+	for (int i = 0; i < graph.num_of_vertices; i++)
+	{
+		int min_distance = int.max;
+		char closest_vertex = ' ';
+		for (int j = 0; j < graph.num_of_vertices; j++)
+		{
+			if(!graph.visited[graph.vertices[j]] && graph.edges[i][j])
+				if(graph.edges[i][j] < min_distance)
 				{
-					min = value;
-					write(key);
-					if(graph.vertices.length > 0)
-						current_vertex = graph.vertices.require(key, graph.vertices[(graph.vertices.keys[0])]);
+					min_distance = graph.edges[i][j];
+					closest_vertex = graph.vertices[j];
 				}
+		}
+		if (min_distance == int.max)
+			break;
+		graph.visited[closest_vertex] = true;
+		int c_index = graph.index_of_vertex(closest_vertex);
+		for(int j = 0; j < graph.num_of_vertices; j++)
+		{
+			if(graph.edges[c_index][j])
+				if (distances[c_index] + graph.edges[c_index][j] < distances[j])
+					distances[j] = distances[c_index] + graph.edges[c_index][j];
+		}
 	}
-	
-        writeln;
-    writeln("Vertex \t Distance from the Source");
-    foreach (name, _; graph.visited){;
-        writeln(name, "\t\t", distances[name]);
-    }
+	writeln(distances);
 }
 
 int main()
@@ -76,9 +69,8 @@ int main()
 	auto my_graph = new Graph();
 	my_graph.initDefaultGraph();
 	my_graph.printGraph();
-    my_dijkstraAlgorithm(my_graph, my_graph.get_vertex('A'));
-    
-
+    my_dijkstraAlgorithm(my_graph, 'A');
+ 
     int[6][6] graph = [ [ 0, 1, 2, 0, 0, 0],
                         [ 1, 0, 1, 0, 3, 0],
                         [ 2, 1, 0, 2, 2, 0],
